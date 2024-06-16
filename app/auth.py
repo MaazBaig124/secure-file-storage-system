@@ -1,0 +1,21 @@
+from functools import wraps
+from flask import request, jasonify
+import jwt
+from app import create_app
+
+app = create_app()
+
+def token_required(f): 
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'x-access-tokens' in request.headers: 
+            token = request.headers['x-access-tokens']
+            if not token: 
+                return jsonify({'message': 'Token is missing!'}), 401
+            try: 
+                data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            except: 
+                return jsonify({'message': 'Token is invalid!'}), 401
+            return f(*args, **kwargs)
+        return decorated
