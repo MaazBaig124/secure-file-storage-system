@@ -31,3 +31,6 @@ A secure file storage system that encrypts files before uploading them to the cl
 1. Go to `http://127.0.0.1:5000/`
 2. Upload a file to be encrypted and stored in AWS S3
 
+## License
+
+MIT
