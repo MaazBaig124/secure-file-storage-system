@@ -1,14 +1,49 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Secure File Storage</title>
-  </head>
-  <body>
-    <h1>Secure File Storage System</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <button type="submit">Upload</button>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure File Upload</title>
+    <script>
+        function generateToken() {
+            fetch('/generate_token')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('token').value = data.token;
+                });
+        }
+
+        function uploadFile() {
+            const token = document.getElementById('token').value;
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                headers: {
+                    'x-access-tokens': token
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Secure File Upload</h1>
+    <button onclick="generateToken()">Generate Token</button><br><br>
+    <label for="token">Token:</label><br>
+    <input type="text" id="token" readonly><br><br>
+    <form onsubmit="event.preventDefault(); uploadFile();">
+        <input type="file" id="fileInput"><br><br>
+        <input type="submit" value="Upload">
     </form>
-  </body>
+</body>
 </html>
