@@ -1,7 +1,7 @@
 import jwt
 import datetime
 
-SECRET_KEY = 'your_secret_key'  # Make sure this matches the SECRET_KEY in your Flask config
+SECRET_KEY = 'your_secret_key'  
 
 def generate_token():
     token = jwt.encode({

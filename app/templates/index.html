@@ -8,7 +8,53 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('token').value = data.token;
+                    listFiles(data.token);
                 });
+        }
+
+        function listFiles(token) {
+            fetch('/list_files', {
+                method: 'GET',
+                headers: {
+                    'x-access-tokens': token
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const filesList = document.getElementById('filesList');
+                filesList.innerHTML = '';
+                data.files.forEach(file => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        ${file} 
+                        <button onclick="downloadFile('${file}', '${token}', false)">Download Encrypted</button>
+                        <button onclick="downloadFile('${file}', '${token}', true)">Download Decrypted</button>
+                    `;
+                    filesList.appendChild(listItem);
+                });
+            });
+        }
+
+        function downloadFile(filename, token, decrypted) {
+            const url = decrypted ? `/download_decrypted/${filename}` : `/download/${filename}`;
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'x-access-tokens': token
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error:', error));
         }
 
         function uploadFile() {
@@ -29,10 +75,9 @@
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
+                listFiles(token);
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </head>
@@ -45,5 +90,7 @@
         <input type="file" id="fileInput"><br><br>
         <input type="submit" value="Upload">
     </form>
+    <h2>Files:</h2>
+    <ul id="filesList"></ul>
 </body>
 </html>
