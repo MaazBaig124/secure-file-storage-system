@@ -65,23 +65,22 @@ This project is a secure file storage system designed to encrypt files before up
    ```bash
    git clone https://github.com/yourusername/secure-file-storage-system.git
    cd secure-file-storage-system
-Set up the virtual environment and install dependencies:
+2. **Set up the virtual environment and install dependencies:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
 
-python3 -m venv venv
-source venv/bin/activate
-	pip install -r requirements.txt
+2. **Run LocalStack using Docker:**
+   ```bash
+   docker run -d -p 4566:4566 -p 4571:4571 localstack/localstack
 
-Run LocalStack using Docker:
-
-	docker run -d -p 4566:4566 -p 4571:4571 localstack/localstack
-
-Start the Flask application:
+3. **Start the Flask application:**
+   ```bash
+   python3 run.py
 
 
-	python3 run.py
-
-
-Open index.html in your web browser:
+4. **Open index.html in your web browser:**
 	Navigate to http://127.0.0.1:5000 to interact with the application.
 
 Conclusion:
