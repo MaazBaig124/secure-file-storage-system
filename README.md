@@ -83,5 +83,5 @@ This project is a secure file storage system designed to encrypt files before up
 4. **Open index.html in your web browser:**
 	Navigate to http://127.0.0.1:5000 to interact with the application.
 
-Conclusion:
+## Conclusion:
 This project demonstrates a secure mechanism for storing files in the cloud with encryption and access control. The index.html file provides a practical demonstration of how JWT tokens are generated and used to secure file uploads and downloads.
